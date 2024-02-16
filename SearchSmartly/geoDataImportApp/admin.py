@@ -1,14 +1,6 @@
 from django.contrib import admin
-from .models import CsvPointOfInterest, JsonPointOfInterest, XmlPointOfInterest
+from .models import PointsOfInterest
 
-@admin.register(CsvPointOfInterest)
+@admin.register(PointsOfInterest)
 class CsvPointOfInterestAdmin(admin.ModelAdmin):
-    list_display = ['poi_id', 'poi_name', 'poi_category', 'poi_ratings']
-
-@admin.register(JsonPointOfInterest)
-class JsonPointOfInterestAdmin(admin.ModelAdmin):
-    list_display = ['poi_id', 'poi_name', 'poi_category', 'poi_ratings']
-
-@admin.register(XmlPointOfInterest)
-class XmlPointOfInterestAdmin(admin.ModelAdmin):
-    list_display = ['poi_id', 'poi_name', 'poi_category', 'poi_ratings']
+    list_display = ['poi_id', 'poi_name', 'poi_category', 'poi_ratings', 'poi_latitude', 'poi_longitude', 'data_origin', 'poi_description']
