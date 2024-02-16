@@ -1,6 +1,8 @@
+from collections import defaultdict
 import csv
 import os
 import json
+from unittest import skipIf
 import xml.etree.ElementTree as ET
 from django.core.management.base import BaseCommand
 from geoDataImportApp.models import CsvPointOfInterest, JsonPointOfInterest, XmlPointOfInterest
@@ -8,21 +10,7 @@ from django.core.exceptions import ValidationError
 from concurrent.futures import ThreadPoolExecutor
 import time
 import subprocess
-
-def validate_csv(file_path):
-    # Path to the compiled C++ program
-    cpp_program_path = os.environ["FASTCSVCHECKER"]
-
-    # Call the compiled C++ program with input file path as argument
-    result = subprocess.run([cpp_program_path, file_path], capture_output=True, text=True)
-
-    # Check the result
-    if result.returncode == 0:
-        print("Data validation completed successfully.")
-        print(result.stdout)
-    else:
-        print("Error occurred during data validation.")
-        print(result.stderr)
+import pandas as pd
 
 class Command(BaseCommand):
     help = 'Import Point of Interest data from files'
@@ -33,7 +21,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         use_cpp = options['fast']
-
+        start_time = time.time()
         for file_path in options['files']:
             with open(file_path, 'r', encoding='utf-8') as file:
                 file_extension = file_path.split('.')[-1]
@@ -41,6 +29,8 @@ class Command(BaseCommand):
                     if use_cpp:
                         pass
                         validate_csv(file_path)
+                        print(f"CSV took: {time.time() - start_time}")
+
                     else:
                         for file_path in options['files']:
                             reader = csv.DictReader(file)
@@ -153,3 +143,18 @@ def validate_and_create_csv_point(row, row_number):
         poi_category=poi_category,
         poi_ratings=poi_ratings
     )
+
+def validate_csv(file_path):
+    # Path to the compiled C++ program
+    cpp_program_path = os.environ["FASTCSVCHECKER"]
+
+    # Call the compiled C++ program with input file path as argument
+    result = subprocess.run([cpp_program_path, file_path], capture_output=True, text=True)
+
+    # Check the result
+    if result.returncode == 0:
+        print("Data validation completed successfully.")
+        print(result.stdout)
+    else:
+        print("Error occurred during data validation.")
+        print(result.stderr)

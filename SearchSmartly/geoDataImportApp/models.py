@@ -15,7 +15,7 @@ class JsonPointOfInterest(models.Model):
     poi_latitude = models.FloatField()
     poi_longitude = models.FloatField()
     poi_category = models.CharField(max_length=50)
-    poi_ratings = models.FloatField()
+    poi_ratings = models.TextField()
     poi_description = models.TextField()
 
 class XmlPointOfInterest(models.Model):
@@ -24,4 +24,4 @@ class XmlPointOfInterest(models.Model):
     poi_latitude = models.FloatField()
     poi_longitude = models.FloatField()
     poi_category = models.CharField(max_length=50)
-    poi_ratings = models.FloatField()
+    poi_ratings = models.TextField()
