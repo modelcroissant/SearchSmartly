@@ -44,27 +44,24 @@ class Command(BaseCommand):
                         validate_csv(file_path)
                     else:
                         for file_path in options['files']:
-                            with open(file_path, 'r', encoding='utf-8') as file:
-                                file_extension = file_path.split('.')[-1]
-                                if file_extension == 'csv':
-                                    reader = csv.DictReader(file)
-                                    batch = []
-                                    invalid_rows = []
-                                    with ThreadPoolExecutor() as executor:
-                                        futures = []
-                                        for i, row in enumerate(reader):
-                                            futures.append(executor.submit(validate_and_create_csv_point, row, i))
-                                        for future in futures:
-                                            try:
-                                                result = future.result()
-                                                if result:
-                                                    batch.append(result)
-                                            except ValidationError as e:
-                                                invalid_rows.append(e)
-                                    if batch:
-                                        CsvPointOfInterest.objects.bulk_create(batch)
-                                    for error in invalid_rows:
-                                        self.stdout.write(self.style.WARNING(error))
+                            reader = csv.DictReader(file)
+                            batch = []
+                            invalid_rows = []
+                            with ThreadPoolExecutor() as executor:
+                                futures = []
+                                for i, row in enumerate(reader):
+                                    futures.append(executor.submit(validate_and_create_csv_point, row, i))
+                                for future in futures:
+                                    try:
+                                        result = future.result()
+                                        if result:
+                                            batch.append(result)
+                                    except ValidationError as e:
+                                        invalid_rows.append(e)
+                            if batch:
+                                CsvPointOfInterest.objects.bulk_create(batch)
+                            for error in invalid_rows:
+                                self.stdout.write(self.style.WARNING(error))
                 elif file_extension == 'xml':
                     # Handle XML files
                     tree = ET.parse(file)
