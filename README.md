@@ -7,7 +7,7 @@ This Django project is designed to import Point of Interest (PoI) data from vari
 1. Clone this repository:
 This is built on Python 3.11.8
 ```
-git clone [SearchSmartlyRepo](https://github.com/modelcroissant/SearchSmartly)
+git clone https://github.com/modelcroissant/SearchSmartly
 ```
 
 2. Install dependencies using pip (prerequisit, installed and activated venv):
