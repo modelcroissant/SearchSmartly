@@ -57,11 +57,3 @@ http://localhost:8080/admin
 ### Searching and Filtering
 
 You can search for PoI data by internal ID or external ID using the search bar in the admin interface. Additionally, you can filter PoI data by category using the provided filter options.
-
-## Contributing
-
-If you would like to contribute to this project, feel free to open an issue or submit a pull request. Contributions are welcome!
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
