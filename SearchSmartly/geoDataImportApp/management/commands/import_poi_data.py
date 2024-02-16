@@ -43,29 +43,28 @@ class Command(BaseCommand):
                         pass
                         validate_csv(file_path)
                     else:
-                        # Handle CSV files
-                        pass
-                elif file_extension == 'json':
-                    # Handle JSON files
-                    json_data = json.load(file)
-                    for item in json_data:
-                        poi_id = item['id']
-                        poi_name = item['name']
-                        poi_latitude = item['coordinates']['latitude']
-                        poi_longitude = item['coordinates']['longitude']
-                        poi_category = item['category']
-                        poi_ratings = ','.join(map(str, item['ratings']))
-                        poi_description = item.get('description', '')
-                        # Create JsonPointOfInterest instance and save it
-                        JsonPointOfInterest.objects.create(
-                            poi_id=poi_id,
-                            poi_name=poi_name,
-                            poi_latitude=poi_latitude,
-                            poi_longitude=poi_longitude,
-                            poi_category=poi_category,
-                            poi_ratings=poi_ratings,
-                            poi_description=poi_description
-                        )
+                        for file_path in options['files']:
+                            with open(file_path, 'r', encoding='utf-8') as file:
+                                file_extension = file_path.split('.')[-1]
+                                if file_extension == 'csv':
+                                    reader = csv.DictReader(file)
+                                    batch = []
+                                    invalid_rows = []
+                                    with ThreadPoolExecutor() as executor:
+                                        futures = []
+                                        for i, row in enumerate(reader):
+                                            futures.append(executor.submit(validate_and_create_csv_point, row, i))
+                                        for future in futures:
+                                            try:
+                                                result = future.result()
+                                                if result:
+                                                    batch.append(result)
+                                            except ValidationError as e:
+                                                invalid_rows.append(e)
+                                    if batch:
+                                        CsvPointOfInterest.objects.bulk_create(batch)
+                                    for error in invalid_rows:
+                                        self.stdout.write(self.style.WARNING(error))
                 elif file_extension == 'xml':
                     # Handle XML files
                     tree = ET.parse(file)
