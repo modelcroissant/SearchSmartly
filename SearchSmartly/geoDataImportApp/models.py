@@ -11,3 +11,4 @@ class PointsOfInterest(models.Model):
     poi_ratings = models.TextField()
     poi_description = models.TextField()
     data_origin = models.CharField(max_length=5)
+    average_rating = models.FloatField(default=0)

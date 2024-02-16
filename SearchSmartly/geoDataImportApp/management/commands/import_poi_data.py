@@ -96,7 +96,6 @@ def process_file(file_path, db_queue, file_lock):
 
 def save_to_database(db_queue, main_loop_flag):
     ## PRO-TIP DELETE THE DB, SAVE TIME
-    ##
     while True:
         batch = db_queue.get()
         if batch:
@@ -129,6 +128,12 @@ def validate_and_create_point(row, index, data_origin):
         print(ValidationError(f'Missing required fields in row {index}'))
         return 
     
+    try:
+        ratings = [float(rating) for rating in poi_ratings.replace("{", "").replace("}", "").split(",") if rating.strip()]
+        average_rating = sum(ratings) / len(ratings)
+    except ZeroDivisionError:
+        average_rating = 0
+
     return PointsOfInterest(
         poi_id=poi_id,
         poi_name=poi_name,
@@ -136,6 +141,7 @@ def validate_and_create_point(row, index, data_origin):
         poi_longitude=poi_longitude,
         poi_category=poi_category,
         poi_ratings=poi_ratings,
-        poi_description = poi_description,
-        data_origin = data_origin,
+        poi_description=poi_description,
+        data_origin=data_origin,
+        average_rating=average_rating
     )
