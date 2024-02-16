@@ -1,3 +1,4 @@
+import os
 import csv
 import json
 import time
@@ -19,11 +20,18 @@ class Command(BaseCommand):
         db_queue = Queue()
         main_loop_flag = threading.Event() 
         db_thread = threading.Thread(target=save_to_database, args=(db_queue, main_loop_flag))
-        db_thread.start()
         file_lock = threading.Lock()
         for file_path in options['files']:
+            if not os.path.exists(file_path):
+                print(f"File '{file_path}' does not exist. Skipping...")
+                return
+            file_extension = file_path.split('.')[-1]
+            if file_extension not in ['csv', 'json', 'xml']:
+                print(f"Unsupported file type: '{file_extension}'. Skipping...")
+                return
             threading.Thread(target=process_file, args=(file_path, db_queue, file_lock)).start()
-
+        
+        db_thread.start()
         main_loop_flag.wait()
         print(f"Processing took: {time.time() - start_time}")
 
