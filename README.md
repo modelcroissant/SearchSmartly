@@ -57,3 +57,18 @@ http://localhost:8080/admin
 ### Searching and Filtering
 
 You can search for PoI data by internal ID or external ID using the search bar in the admin interface. Additionally, you can filter PoI data by category using the provided filter options.
+
+## Bonus
+I have included an optimised version of the original function named "import_poi_data_fast", this is a highly optimised version of the 2 hour code task which took significantly longer than 2 hours. 
+I wanted to see if there is a fast implementation of the original task using pure python with minimal usage of any external libraries to reduce as much overhead as possible.
+This version achieves on average sub 30 seconds for processing and saving data to DB for million rows and sub 1 second for XML and JSON data.
+### Comparison
+*All tests conducted on an empty DB*
+| Test Type | Normal | Fast | Total Rows Inserted |
+| --------  | ------ | ---- | ------------------- |
+| JSON 1,000 rows | 0.166 | 0.033| 1000 |
+| XML 100 rows | 0.033 | 0.010 | 100 |
+| CSV 1,000,000 rows | 184.979 | 27.374 | 999,681 |
+| JSON + CSV + XML | 189.564 | 32.126 | 1,000,665 |
+
+I believe it would be possible to achieve sub 10 seconds with further optimisation like SQLite BEGIN CONCURRENT to have multiple writers write to the DB asynchronously, I also believe there maybe time gains in extracting the data from files by utilising more threads and batches for the I/O processes.
