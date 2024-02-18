@@ -71,4 +71,4 @@ This version achieves on average sub 30 seconds for processing and saving data t
 | CSV 1,000,000 rows | 184.979 | 27.374 | 999,681 |
 | JSON + CSV + XML | 189.564 | 32.126 | 1,000,665 |
 
-I believe it would be possible to achieve sub 10 seconds with further optimisation like SQLite BEGIN CONCURRENT to have multiple writers write to the DB asynchronously, I also believe there maybe time gains in extracting the data from files by utilising more threads and batches for the I/O processes.
+I believe it would be possible to achieve sub 10 seconds with further optimisation like SQLite BEGIN CONCURRENT to have multiple writers write to the DB asynchronously in WAL mode into a temp table in memory, I also believe there maybe time gains in extracting the data from files by utilising more threads and batches for the I/O process or extract and process data in C or C++ (as can be seen by my .cpp attempt).
