@@ -61,10 +61,22 @@ http://localhost:8080/admin
 You can search for PoI data by internal ID or external ID using the search bar in the admin interface. Additionally, you can filter PoI data by category using the provided filter options.
 
 ## Bonus
-I have included an optimised version of the original function named "import_poi_data_fast", this is a highly optimised version of the 2 hour code task which took significantly longer than 2 hours. 
-I wanted to see if there is a fast implementation of the original task using pure python with minimal usage of any external libraries to reduce as much overhead as possible.
-This version achieves on average sub 30 seconds for processing and saving data to DB for million rows and sub 1 second for XML and JSON data.
-### Comparison
+Included in this project is an optimised version of the original function for processing data named "import_poi_data_fast." This version is designed to achieve significantly faster processing and insertion of data into the database compared to the original implementation.
+
+### Key Differences:
+
+- **Threading and Queue Usage**: The fast version utilises multiple threads and queues to parallelise the processing of data from files and the insertion into the database. Each file processing task, data validation, and database insertion operation are handled concurrently, maximizing system resources and reducing processing time.
+
+- **Optimised File Processing**: The fast version efficiently processes files in chunks, significantly reducing memory usage and improving performance. It implements batch processing techniques tailored to each file format (CSV, JSON, XML), allowing for faster extraction and transformation of data.
+
+- **Database Insertion Optimisation**: Instead of using Django's ORM for bulk insertion, the fast version directly interacts with the SQLite database using the sqlite3 module. It leverages SQLite's WAL mode and asynchronous processing to enhance write performance and minimise overhead.
+
+- **Error Handling and Data Validation**: Both versions perform data validation to ensure the integrity of the imported data. However, the fast version optimises error handling and data validation processes to minimise computational overhead and maximise throughput.
+
+### Performance Comparison:
+
+The table below summarises the performance comparison between the original and fast versions of the data processing function:
+
 *All tests conducted on an empty DB*
 | Test Type | Normal | Fast | Total Rows Inserted |
 | --------  | ------ | ---- | ------------------- |
@@ -73,4 +85,8 @@ This version achieves on average sub 30 seconds for processing and saving data t
 | CSV 1,000,000 rows | 184.979 | 27.374 | 999,681 |
 | JSON + CSV + XML | 189.564 | 32.126 | 1,000,665 |
 
-I believe it would be possible to achieve sub 10 seconds with further optimisation like SQLite BEGIN CONCURRENT to have multiple writers write to the DB asynchronously in WAL mode into a temp table in memory, or use PostgreSQL which allows multiple concurrent write transactions. I also believe there maybe time gains in extracting the data from files by utilising more threads and batches for the I/O process or extract and process data in C or C++ (as can be seen by my .cpp attempt).
+The fast version consistently outperforms the original implementation, achieving sub-30 seconds processing time for CSV data and sub-1 second processing time for XML and JSON data. These optimisations result in significantly improved efficiency and scalability for importing Point of Interest data into the database.
+
+### Future Enhancements:
+
+While the fast version demonstrates substantial improvements in processing speed, there are opportunities for further optimisation. Potential enhancements include utilising SQLite's BEGIN CONCURRENT mode for asynchronous database writes, exploring alternative database engines for improved concurrency, and optimising file processing algorithms for even faster data extraction.
