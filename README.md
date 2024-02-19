@@ -103,3 +103,5 @@ The fast version consistently outperforms the original implementation, achieving
 ### Future Enhancements:
 
 While the fast version demonstrates substantial improvements in processing speed, there are opportunities for further optimisation. Potential enhancements include utilising SQLite's BEGIN CONCURRENT mode for asynchronous database writes, exploring alternative database engines for improved concurrency, and optimising file processing algorithms for even faster data extraction.
+
+Restructure the code to a more modular approach and follow a more OOP based approach over a monolithic approach for better future extensibility.
