@@ -90,10 +90,10 @@ The table below summarises the performance comparison between the original and f
 *All tests conducted on an empty DB*
 | Test Type | Normal | Fast | Total Rows Inserted |
 | --------  | ------ | ---- | ------------------- |
-| JSON 1,000 rows | 0.166 | 0.033| 1000 |
-| XML 100 rows | 0.033 | 0.010 | 100 |
-| CSV 1,000,000 rows | 184.979 | 27.374 | 999,681 |
-| JSON + CSV + XML | 189.564 | 32.126 | 1,000,665 |
+| JSON 1,000 rows | 0.166s | 0.033s| 1000 |
+| XML 100 rows | 0.033s | 0.010s | 100 |
+| CSV 1,000,000 rows | 184.979s | 27.374s | 999,681 |
+| JSON + CSV + XML | 189.564s | 32.126s | 1,000,665 |
 
 The fast version consistently outperforms the original implementation, achieving sub-30 seconds processing time for CSV data and sub-1 second processing time for XML and JSON data. These optimisations result in significantly improved efficiency and scalability for importing Point of Interest data into the database.
 
