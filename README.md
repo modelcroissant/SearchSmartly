@@ -6,6 +6,14 @@ The primary goal of this project is to optimise the speed and efficiency of proc
 
 Efficient data processing is a key focus of this project, ensuring smooth execution even with large datasets. By employing asynchronous I/O operations for database writes and file reads, this project maximises performance and minimises processing delays.
 
+## Caveats and Considerations
+
+### Unit Tests:
+While unit tests are fundamental to ensuring the reliability and maintainability of software projects, they weren't prioritised during the initial development phase. This decision was made to focus on rapidly prototyping and delivering core functionalities, aiming to meet project deadlines and demonstrate proof of concept. 
+
+### Error Logging:
+In the interest of streamlining development and avoiding unnecessary overhead, extensive error logging wasn't implemented during the initial stages of the project. Instead, the focus was on building and refining core features to meet project objectives efficiently.
+
 ## Installation
 
 1. Clone this repository:
