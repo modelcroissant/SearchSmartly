@@ -14,6 +14,9 @@ While unit tests are fundamental to ensuring the reliability and maintainability
 ### Error Logging:
 In the interest of streamlining development and avoiding unnecessary overhead, extensive error logging wasn't implemented during the initial stages of the project. Instead, the focus was on building and refining core features to meet project objectives efficiently.
 
+### Internal_ID
+I ran out of time to implement internal id properly, it was either going to be an UUID or self incrementing DB row depending on performance.
+
 ## Installation
 
 1. Clone this repository:
