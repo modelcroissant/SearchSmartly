@@ -4,7 +4,7 @@ Welcome to the PoI Data Importer Django project! This project is built to stream
 
 The primary goal of this project is to optimise the speed and efficiency of processing data and adding it to the database. While this implementation serves as a proof of concept, it can be adapted for production use with the WSGI server. However, it's important to note that the multi-threading functionality requires thorough testing before deployment.
 
-Efficient data processing is a key focus of this project, ensuring smooth execution even with large datasets. By employing asynchronous I/O operations for database writes and file reads whilst not blocking the CPU intensive data processing, this project maximises performance and minimises processing delays.
+Efficient data processing is a key focus of this project, ensuring smooth execution even with large datasets. By employing asynchronous I/O operations for database writes and file reads, this project maximises performance and minimises processing delays.
 
 ## Installation
 
