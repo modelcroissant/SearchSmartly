@@ -1,8 +1,10 @@
 # PoI Data Importer
 
-This Django project is designed to import Point of Interest (PoI) data from various file formats (CSV, JSON, XML) into a local database and provide a web interface to browse and search the imported data.
-The main focus of my submission is on speed of processing and adding data to the DB as efficiently as possible. This is definitely a proof of concept approach. This could be implemented into production with WSGI but multi threading will require extensive testing before release.
-This code also avoids python's GIL lock as two out of three components of this code is I/O based operations, DB write and file read which works well for non-blocking when executing data processing on the CPU.
+Welcome to the PoI Data Importer Django project! This project is built to streamline the process of importing Point of Interest (PoI) data from diverse file formats (CSV, JSON, XML) into a local database. Additionally, it provides a user-friendly web interface for browsing and searching through the imported data.
+
+The primary goal of this project is to optimise the speed and efficiency of processing data and adding it to the database. While this implementation serves as a proof of concept, it can be adapted for production use with the WSGI server. However, it's important to note that the multi-threading functionality requires thorough testing before deployment.
+
+One of the key highlights of this project is its efficient handling of data processing, particularly in mitigating Python's Global Interpreter Lock (GIL) limitations. By leveraging I/O-based operations for database writes and file reads, this project ensures non-blocking execution of data processing tasks on the CPU, enhancing overall performance with minimal overhead.
 
 ## Installation
 
