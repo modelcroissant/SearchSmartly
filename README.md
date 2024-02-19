@@ -90,8 +90,8 @@ The table below summarises the performance comparison between the original and f
 *All tests conducted on an empty DB*
 | Test Type | Normal | Fast | Total Rows Inserted |
 | --------  | ------ | ---- | ------------------- |
-| JSON 1,000 rows | 0.166s | 0.033s| 1000 |
 | XML 100 rows | 0.033s | 0.010s | 100 |
+| JSON 1,000 rows | 0.166s | 0.033s| 1000 |
 | CSV 1,000,000 rows | 184.979s | 27.374s | 999,681 |
 | JSON + CSV + XML | 189.564s | 32.126s | 1,000,665 |
 
