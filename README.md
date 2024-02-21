@@ -91,12 +91,14 @@ Included in this project is an optimised version of the original function for pr
 The table below summarises the performance comparison between the original and fast versions of the data processing function:
 
 *All tests conducted on an empty DB*
-| Test Type | Normal | Fast | Total Rows Inserted |
-| --------  | ------ | ---- | ------------------- |
-| XML 100 rows | 0.033s | 0.010s | 100 |
-| JSON 1,000 rows | 0.166s | 0.033s| 1000 |
-| CSV 1,000,000 rows | 184.979s | 27.374s | 999,681 |
-| JSON + CSV + XML | 189.564s | 32.126s | 1,000,665 |
+*CPU used: Intel(R) Xeon(R) CPU E3-1505M v5 @ 2.80GHz, 2801 Mhz, 4 Core(s), 8 Logical Processor(s)*
+
+| Test Type | Normal | Fast | Lightning | Total Rows Inserted |
+| --------  | ------ | ---- | --------- | ------------------- |
+| XML 100 rows | 0.033s | 0.010s | 0.0052s | 100 |
+| JSON 1,000 rows | 0.166s | 0.033s| 0.019s | 1000 |
+| CSV 1,000,000 rows | 184.979s | 27.374s | 14.458s | 999,681 |
+| JSON + CSV + XML | 189.564s | 32.126s | 15.870s | 1,000,665 |
 
 The fast version consistently outperforms the original implementation, achieving sub-30 seconds processing time for CSV data and sub-1 second processing time for XML and JSON data. These optimisations result in significantly improved efficiency and scalability for importing Point of Interest data into the database.
 
