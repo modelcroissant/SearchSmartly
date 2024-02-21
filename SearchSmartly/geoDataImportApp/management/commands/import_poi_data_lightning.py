@@ -7,7 +7,6 @@ import sqlite3
 import xml.etree.ElementTree as ET
 from queue import Queue
 from django.core.management.base import BaseCommand
-from geoDataImportApp.models import PointsOfInterest
 
 class Command(BaseCommand):
     help = 'Import Point of Interest data from files'
@@ -42,13 +41,12 @@ class Command(BaseCommand):
         for thread in threads:
             thread.join()
 
-        print(f"Processing took: {time.time() - start_time}")
-        print("Finished execution")
+        self.stdout.write(self.style.SUCCESS(f"Processing took: {time.time() - start_time}"))
+        self.stdout.write(self.style.SUCCESS(f"Finished Execution"))
 
 def process_file(file_path, file_lock, file_extension, db_queue, main_loop_flag):
     with file_lock:
         data_batch = [] * 10000
-        start_time = time.time()
         if file_extension == 'csv':
             reader = csv.DictReader(open(file_path, encoding='utf-8'),fieldnames=["poi_id","poi_name","poi_category","poi_latitude","poi_longitude","poi_ratings"])
 
@@ -59,7 +57,6 @@ def process_file(file_path, file_lock, file_extension, db_queue, main_loop_flag)
                 if index % 10000 == 0:
                     db_queue.put(data_batch[:])
                     data_batch.clear()
-            print(f"Processing CSV took: {time.time() - start_time}")
 
         elif file_extension == 'json':
             json_data = json.load(open(file_path, 'r', encoding='utf-8'))
