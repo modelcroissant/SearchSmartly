@@ -74,21 +74,30 @@ http://localhost:8080/admin
 You can search for PoI data by internal ID or external ID using the search bar in the admin interface. Additionally, you can filter PoI data by category using the provided filter options.
 
 ## Bonus
+
 Included in this project is an optimised version of the original function for processing data named "import_poi_data_fast." This version is designed to achieve significantly faster processing and insertion of data into the database compared to the original implementation.
 
-### Key Differences:
+### Key Differences from Normal to Fast:
 
 - **Threading and Queue Usage**: The fast version utilises multiple threads and queues to parallelise the processing of data from files and the insertion into the database. Each file processing task, data validation, and database insertion operation are handled concurrently, maximizing system resources and reducing processing time.
-
+  
 - **Optimised File Processing**: The fast version efficiently processes files in chunks, significantly reducing memory usage and improving performance. It implements batch processing techniques tailored to each file format (CSV, JSON, XML), allowing for faster extraction and transformation of data.
 
 - **Database Insertion Optimisation**: Instead of using Django's ORM for bulk insertion, the fast version directly interacts with the SQLite database using the sqlite3 module. It leverages SQLite's WAL mode and asynchronous processing to enhance write performance and minimise overhead.
 
 - **Error Handling and Data Validation**: Both versions perform data validation to ensure the integrity of the imported data. However, the fast version optimises error handling and data validation processes to minimise computational overhead and maximise throughput.
 
+### Key Differences from Fast to Lightning:
+
+- **Single Loop for the whole process**: The lightning version condenses the processing logic into a single loop, improving efficiency by reducing unnecessary iterations.
+  
+- **Dual Threaded instead of triple**: Lightning version utilises dual threading instead of triple threading, optimizing resource usage while maintaining processing speed.
+  
+- **De-coupled data extraction from file to memory and data validation**: In the lightning version, data extraction from files and data validation processes are decoupled, enhancing modularity and readability of the code.
+
 ### Performance Comparison:
 
-The table below summarises the performance comparison between the original and fast versions of the data processing function:
+The table below summarises the performance comparison between the original, fast, and lightning versions of the data processing function:
 
 *All tests conducted on an empty DB*
 *CPU used: Intel(R) Xeon(R) CPU E3-1505M v5 @ 2.80GHz, 2801 Mhz, 4 Core(s), 8 Logical Processor(s)*
@@ -100,10 +109,10 @@ The table below summarises the performance comparison between the original and f
 | CSV 1,000,000 rows | 184.979s | 27.374s | 14.458s | 999,681 |
 | JSON + CSV + XML | 189.564s | 32.126s | 15.870s | 1,000,665 |
 
-The fast version consistently outperforms the original implementation, achieving sub-30 seconds processing time for CSV data and sub-1 second processing time for XML and JSON data. These optimisations result in significantly improved efficiency and scalability for importing Point of Interest data into the database.
+The fast version consistently outperforms the original implementation, achieving sub-30 seconds processing time for CSV data and sub-1 second processing time for XML and JSON data. The lightning version builds upon the fast version, demonstrating even further improvements in processing speed. With lightning, the CSV processing time is reduced by approximately 47% compared to the fast version. These optimisations result in significantly improved efficiency and scalability for importing Point of Interest data into the database.
 
 ### Future Enhancements:
 
-While the fast version demonstrates substantial improvements in processing speed, there are opportunities for further optimisation. Potential enhancements include utilising SQLite's BEGIN CONCURRENT mode for asynchronous database writes, exploring alternative database engines for improved concurrency, and optimising file processing algorithms for even faster data extraction.
+While the fast and lightning versions demonstrate substantial improvements in processing speed, there were opportunities for further optimisation as shown in lightning. I believe that lightning is the fastest version possible without going to compiled language or using a different database engine that allows concurrent writes.
 
 This code could also benefit from refactoring to adopt an object-oriented programming (OOP) approach, enhancing its modularity and setting a foundation for improved extensibility and future development. By restructuring the code into classes that encapsulate specific functionalities, such as file processing, database interaction, and data validation, we can achieve a more organised and maintainable codebase. This modular approach enables easier extension and modification of individual components, facilitating smoother integration of new features or enhancements in the future.
